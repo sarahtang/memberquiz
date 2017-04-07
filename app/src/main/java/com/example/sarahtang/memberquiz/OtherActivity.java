@@ -1,10 +1,8 @@
 package com.example.sarahtang.memberquiz;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
@@ -16,34 +14,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.CountDownTimer;
 import android.widget.Toast;
-
 import java.lang.Math;
-import org.w3c.dom.Text;
 
 public class OtherActivity extends AppCompatActivity implements View.OnClickListener {
     private String currMember;
     private int score;
     private CountDownTimer countdowntimer;
-    String[] members = {"Jessica Cherny", "Kevin Jiang",
-            "Jared Gutierrez", "Kristin Ho",
-            "Christine Munar", "Mudit Mittal",
-            "Richard Hu", "Shaan Appel",
-            "Edward Liu", "Wilbur Shi",
-            "Young Lin", "Abhinav Koppu",
-            "Abhishek Mangla", "Akkshay Khoslaa",
-            "Andy Wang", "Aneesh Jindal",
-            "Anisha Salunkhe", "Ashwin Vaidyanathan",
-            "Cody Hsieh", "Justin Kim",
-            "Krishnan Rajiyah", "Lisa Lee",
-            "Peter Schafhalter", "Sahil Lamba",
-            "Sirjan Kafle", "Tarun Khasnavis",
-            "Billy Lu", "Aayush Tyagi",
-            "Ben Goldberg", "Candice Ye",
-            "Eliot Han", "Emaan Hariri",
-            "Jessica Chen", "Katharine Jiang",
-            "Kedar Thakkar", "Leon Kwak",
-            "Mohit Katyal", "Rochelle Shen",
-            "Sayan Paul", "Sharie Wang", "Shreya Reddy",
+    String[] members = {"Jessica Cherny", "Kevin Jiang", "Jared Gutierrez", "Kristin Ho",
+            "Christine Munar", "Mudit Mittal", "Richard Hu", "Shaan Appel",
+            "Edward Liu", "Wilbur Shi", "Young Lin", "Abhinav Koppu",
+            "Abhishek Mangla", "Akkshay Khoslaa", "Andy Wang", "Aneesh Jindal",
+            "Anisha Salunkhe", "Ashwin Vaidyanathan", "Cody Hsieh", "Justin Kim",
+            "Krishnan Rajiyah", "Lisa Lee", "Peter Schafhalter", "Sahil Lamba",
+            "Sirjan Kafle", "Tarun Khasnavis", "Billy Lu", "Aayush Tyagi",
+            "Ben Goldberg", "Candice Ye", "Eliot Han", "Emaan Hariri",
+            "Jessica Chen", "Katharine Jiang", "Kedar Thakkar", "Leon Kwak",
+            "Mohit Katyal", "Rochelle Shen", "Sayan Paul", "Sharie Wang", "Shreya Reddy",
             "Shubham Goenka", "Victor Sun", "Vidya Ravikumar"};
     private Button button2;
     private Button button3;
@@ -51,6 +37,7 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
     private Button button5;
     private Button endGame;
     private ImageView memberPic;
+    private int white = (Color.parseColor("#fdfffc"));
 
     public void onClick (View v) {
         //based on what button text set to
@@ -58,7 +45,7 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
             //Call next member - got it right so continue
             score++;
             TextView score = (TextView) findViewById(R.id.score);
-            ((Button)v).setBackgroundColor(Color.parseColor("#006600"));
+            (v).setBackgroundColor(Color.parseColor("#00b300")); //hex = light green
             score.setText("Score: " + this.score);
 
             Handler handler = new Handler();
@@ -69,21 +56,10 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
             }, 500);
         }
         else {
-            if (v.getId() == button2.getId()) {
-                button2.setBackgroundColor(Color.RED);
-            }
-            if (v.getId() == button3.getId()) {
-                button3.setBackgroundColor(Color.RED);
-            }
-            if (v.getId() == button4.getId()) {
-                button4.setBackgroundColor(Color.RED);
-            }
-            if (v.getId() == button5.getId()) {
-                button5.setBackgroundColor(Color.RED);
-            }
-            Toast.makeText(this, "WRONG!", Toast.LENGTH_SHORT).show();
+            wrongMember(v);
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,21 +91,6 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
         button5.setOnClickListener(this);
         endGame.setOnClickListener(this);
 
-        countdowntimer = new CountDownTimer(6000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                timer.setText("Time Left: " + millisUntilFinished / 1000);
-            }
-
-            public void onFinish() {
-                nextMember();
-                //timer.setText("done!");
-            }
-        };
-        countdowntimer.start();
-        nextMember();
-
-
         endGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +109,21 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        countdowntimer = new CountDownTimer(6000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timer.setText("Time Left: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                nextMember();
+            }
+        };
+        countdowntimer.start();
+        nextMember();
+
     }
+
     private void nextMember() {
         //calling for picture, each turn
         String[] options = getOptions();
@@ -156,10 +131,10 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
         button3.setText(options[1]);
         button4.setText(options[2]);
         button5.setText(options[3]);
-        button2.setBackgroundColor(Color.parseColor("#fdfffc"));
-        button3.setBackgroundColor(Color.parseColor("#fdfffc"));
-        button4.setBackgroundColor(Color.parseColor("#fdfffc"));
-        button5.setBackgroundColor(Color.parseColor("#fdfffc"));
+        button2.setBackgroundColor(white);
+        button3.setBackgroundColor(white);
+        button4.setBackgroundColor(white);
+        button5.setBackgroundColor(white);
         int currMemberIndex = (int) (Math.random() * options.length);
         currMember = options[currMemberIndex];
         String imgName = currMember.toLowerCase().replace(" ", "");
@@ -191,6 +166,32 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
             }
         }
         return false;
+    }
+
+    protected void wrongMember(View v) {
+        if (v.getId() == button2.getId()) {
+            button2.setBackgroundColor(Color.RED);
+        }
+        if (v.getId() == button3.getId()) {
+            button3.setBackgroundColor(Color.RED);
+        }
+        if (v.getId() == button4.getId()) {
+            button4.setBackgroundColor(Color.RED);
+        }
+        if (v.getId() == button5.getId()) {
+            button5.setBackgroundColor(Color.RED);
+        }
+        Toast.makeText(this, "WRONG!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
     }
 
 }
